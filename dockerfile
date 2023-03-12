@@ -7,7 +7,7 @@
 FROM python:3.11
 
 # Sets the maintainer of the project
-MAINTAINER FIRST_NAME LAST_NAME "YOUR_EMAIL@gmail.com"
+MAINTAINER Maxwell Mullin "mullinmax@gmail.com"
 
 # Set the working directory for the container
 # This is the directory where commands will be executed
