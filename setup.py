@@ -38,11 +38,7 @@ setup_dict = {
 	],
     'python_requires':'>=3.6',  # min and max supported versions of Python
     'install_requires':[  # packages required to run your project
-        #'flask',
-        #'waitress',
-        #'markdown',
-        #'beautifulsoup4',
-        #'pygments'
+        fastapi
     ],
     'extras_require':{  # optional dependencies for building or testing your project
         'test':[
