@@ -8,8 +8,8 @@ setup_dict = {
     'description':'A static site generator to manage your bookmarks',
 	'long_description':open('README.md').read(),
 	'long_description_content_type':'text/markdown',
-    #'author':'Your Name',  # author of your project
-    #'author_email':'Your Email',  # author's email address
+    'author':'Maxwell Mullin',  # author of your project
+    'author_email':'mullinmax@gmail.com',  # author's email address
 	'license':'MIT',
 	'classifiers':[
 		# https://pypi.org/classifiers/
