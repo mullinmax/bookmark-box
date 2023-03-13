@@ -1,5 +1,5 @@
-from database_connections.database import Database
-from database_connections.bookmark_folder_manager import BookmarkFolder
+from database import Database
+from bookmark import BookmarkFolder
 
 with Database('./bookmark-box.sqlite') as db:
     # create a new bookmark folder and save it to the database
