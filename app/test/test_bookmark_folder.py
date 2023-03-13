@@ -1,7 +1,6 @@
 import sqlite3
 import pytest
 import os
-from typing import Dict
 
 # from .database import Database
 from bookmark import BookmarkFolder
@@ -9,9 +8,26 @@ from bookmark import BookmarkFolder
 
 # setup test data
 test_folders = [
-    BookmarkFolder(icon='https://example.com/icon.png', title='My Bookmarks', links={'Google': 'https://www.google.com', 'Facebook': 'https://www.facebook.com'}),
-    BookmarkFolder(icon='https://example.com/icon.png', title='My Folder', links={}),
-    BookmarkFolder(icon='https://example.com/icon.png', title='Another Folder', links={'GitHub': 'https://github.com'})
+    BookmarkFolder(
+        icon='https://example.com/icon.png', 
+        title='My Bookmarks', 
+        links={
+            'Google': 'https://www.google.com', 
+            'Facebook': 'https://www.facebook.com'
+        }
+    ),
+    BookmarkFolder(
+        icon='https://example.com/icon.png', 
+        title='My Folder', 
+        links={}
+    ),
+    BookmarkFolder(
+        icon='https://example.com/icon.png', 
+        title='Another Folder', 
+        links={
+            'GitHub': 'https://github.com'
+        }
+    )
 ]
 
 # create a fixture to setup and teardown the test database and data
