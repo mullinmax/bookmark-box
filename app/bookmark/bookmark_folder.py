@@ -1,10 +1,9 @@
 import sqlite3
 from typing import Dict, List
 import json
-import emoji
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
-import requests
+
 
 class BookmarkFolder:
     def __init__(self, icon: str, title: str, links: Dict[str, str]) -> None:
