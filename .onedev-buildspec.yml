@@ -1,4 +1,56 @@
 version: 19
+jobs:
+- name: Pull Request Review
+  jobExecutor: docker-executor
+  steps:
+  - !UseTemplateStep
+    name: Checkout Code and Set Build Version
+    templateName: Checkout Code and Set Build Version
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: Execute Tests
+    templateName: Execute Tests
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: Trial Docker Container Build
+    templateName: Trial Docker Container Build
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !PullRequestUpdateTrigger {}
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
+- name: Update Master or Dev
+  jobExecutor: docker-executor
+  steps:
+  - !UseTemplateStep
+    name: Checkout Code and Set Build Version
+    templateName: Checkout Code and Set Build Version
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: Execute Tests
+    templateName: Execute Tests
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: Push Docker Container to DockerHub
+    templateName: Push Docker Container to Dockerhub
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: Publish Package on PyPI
+    templateName: Publish Package on Pypi
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: Sync master to Github
+    templateName: Sync to GitHub
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger
+    branches: master dev
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
 stepTemplates:
 - name: Checkout Code and Set Build Version
   steps:
@@ -19,7 +71,7 @@ stepTemplates:
       - CURRENT_BRANCH=$(git branch --show-current)
       - ''
       - if [ "$CURRENT_BRANCH" != "master" ]; then
-      - "\texport BUILD_VERSION=\"${PACKAGE_VERSION}${CURRENT_BRANCH}${BUILD_NUMBER}\""
+      - "\texport BUILD_VERSION=\"${PACKAGE_VERSION}${CURRENT_BRANCH}.dev${BUILD_NUMBER}\""
       - "  \techo \"$BUILD_VERSION\" > BUILD_VERSION"
       - "\techo \"$BUILD_NUMBER\""
       - "\techo \"$BUILD_VERSION\""
@@ -117,55 +169,3 @@ stepTemplates:
     withLfs: true
     force: true
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-jobs:
-- name: Pull Request Review
-  jobExecutor: docker-executor
-  steps:
-  - !UseTemplateStep
-    name: Checkout Code and Set Build Version
-    templateName: Checkout Code and Set Build Version
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  - !UseTemplateStep
-    name: Execute Tests
-    templateName: Execute Tests
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  - !UseTemplateStep
-    name: Trial Docker Container Build
-    templateName: Trial Docker Container Build
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  triggers:
-  - !PullRequestUpdateTrigger {}
-  retryCondition: never
-  maxRetries: 3
-  retryDelay: 30
-  timeout: 3600
-- name: Update Master or Dev
-  jobExecutor: docker-executor
-  steps:
-  - !UseTemplateStep
-    name: Checkout Code and Set Build Version
-    templateName: Checkout Code and Set Build Version
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  - !UseTemplateStep
-    name: Execute Tests
-    templateName: Execute Tests
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  - !UseTemplateStep
-    name: Push Docker Container to DockerHub
-    templateName: Push Docker Container to Dockerhub
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  - !UseTemplateStep
-    name: Publish Package on PyPI
-    templateName: Publish Package on Pypi
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  - !UseTemplateStep
-    name: Sync master to Github
-    templateName: Sync to GitHub
-    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
-  triggers:
-  - !BranchUpdateTrigger
-    branches: master dev
-  retryCondition: never
-  maxRetries: 3
-  retryDelay: 30
-  timeout: 3600
