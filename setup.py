@@ -38,7 +38,7 @@ setup_dict = {
 	],
     'python_requires':'>=3.6',  # min and max supported versions of Python
     'install_requires':[  # packages required to run your project
-        fastapi
+        'fastapi'
     ],
     'extras_require':{  # optional dependencies for building or testing your project
         'test':[
