@@ -26,8 +26,21 @@ class BookmarkFolder:
         icon_blob = sqlite3.Binary(self.icon)
 
         # Save the bookmark folder to the database
-        conn.execute("INSERT OR REPLACE INTO bookmark_folder (title, icon, links) VALUES (?, ?, ?)",
-                     (self.title, icon_blob, json.dumps(self.links)))
+        conn.execute(
+            """
+                INSERT OR REPLACE INTO bookmark_folder (
+                    title, 
+                    icon, 
+                    links
+                ) 
+                VALUES (?, ?, ?)
+            """,
+            (
+                self.title, 
+                icon_blob, 
+                json.dumps(self.links)
+            )
+        )
         conn.commit()
 
     @classmethod
