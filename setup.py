@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup_dict = {
     'name':'bookmark-box', # This should match your OneDev project name
-    'version':'0.0.0', # will get automatically picked up by CI/CD pipeline
+    'version':'0.0.1', # will get automatically picked up by CI/CD pipeline
     'packages':find_packages(),  # Automatically finds identifies packages in repo to include
     'include_package_data':True,  # if non-Python files should be included
     'description':'A static site generator to manage your bookmarks',
